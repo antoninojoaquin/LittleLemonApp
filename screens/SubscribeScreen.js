@@ -1,20 +1,26 @@
 import * as React from "react";
 import { useState } from "react";
 import {
+  View,
   Image,
   Text,
   TextInput,
-  Pressable,
   StyleSheet,
   Alert,
   KeyboardAvoidingView,
-  Platform
+  ScrollView,
+  Platform,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import PrimaryButton from "../components/PrimaryButton";
+import { colors, radius, shadow } from "../constants/theme";
 import { validateEmail } from "../utils/index";
 
 const SubscribeScreen = () => {
   const [email, setEmail] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
   const isEmailValid = !!validateEmail(email);
+  const showError = email.length > 0 && !isEmailValid && !isFocused;
 
   const subscribed = () => {
     Alert.alert("Thanks for subscribing!", "Stay tuned!", [{ text: "Ok" }]);
@@ -22,77 +28,155 @@ const SubscribeScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <Image
-        style={styles.logoImage}
-        source={require("../assets/images/little-lemon-logo-grey.png")}
-      />
-      <Text style={styles.heroText}>
-        {`Subscribe to our newsletter for our\nlatest delicious recipes!`}
-      </Text>
-      <TextInput
-        placeholder="Type your email"
-        placeholderTextColor="#9c9c9c"
-        style={styles.newsletterInput}
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        autoCorrect={false}
-        keyboardType="email-address"
-      />
-      <Pressable
-        onPress={subscribed}
-        style={[styles.subscribeButton, !isEmailValid && styles.buttonDisabled]}
-        disabled={!isEmailValid}
+    <SafeAreaView style={styles.safeArea} edges={["bottom"]}>
+      <KeyboardAvoidingView
+        style={styles.flex}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <Text style={styles.subscribeText}>Subscribe</Text>
-      </Pressable>
-    </KeyboardAvoidingView>
+        <ScrollView
+          contentContainerStyle={styles.scroll}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.card}>
+            <View style={styles.badge}>
+              <Image
+                style={styles.logoImage}
+                resizeMode="contain"
+                source={require("../assets/images/little-lemon-logo-grey.png")}
+              />
+            </View>
+
+            <Text style={styles.title}>Stay in the loop</Text>
+            <Text style={styles.subtitle}>
+              Subscribe to our newsletter for our latest delicious recipes!
+            </Text>
+
+            <Text style={styles.label}>Email address</Text>
+            <TextInput
+              placeholder="you@example.com"
+              placeholderTextColor={colors.textMuted}
+              style={[
+                styles.input,
+                isFocused && styles.inputFocused,
+                showError && styles.inputError,
+              ]}
+              value={email}
+              onChangeText={setEmail}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoComplete="email"
+              keyboardType="email-address"
+              returnKeyType="done"
+              onSubmitEditing={() => isEmailValid && subscribed()}
+            />
+            {showError && (
+              <Text style={styles.errorText}>
+                Please enter a valid email address.
+              </Text>
+            )}
+
+            <PrimaryButton
+              title="Subscribe"
+              onPress={subscribed}
+              disabled={!isEmailValid}
+              style={styles.button}
+            />
+          </View>
+
+          <Text style={styles.footnote}>You can unsubscribe at any time.</Text>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
+    backgroundColor: colors.background,
+  },
+  flex: {
+    flex: 1,
+  },
+  scroll: {
+    flexGrow: 1,
+    justifyContent: "center",
+    padding: 20,
+  },
+  card: {
+    backgroundColor: colors.surface,
+    borderRadius: radius.lg,
+    padding: 24,
     alignItems: "center",
-    paddingVertical: 32,
-    paddingHorizontal: 16,
+    ...shadow,
+  },
+  badge: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+    backgroundColor: colors.accentSoft,
+    alignItems: "center",
+    justifyContent: "center",
   },
   logoImage: {
-    height: 150,
-    width: 150,
-    resizeMode: "contain",
+    width: 48,
+    height: 56,
   },
-  heroText: {
+  title: {
+    marginTop: 20,
     fontSize: 24,
-    marginTop: 48,
+    fontWeight: "800",
+    color: colors.text,
+  },
+  subtitle: {
+    marginTop: 8,
+    fontSize: 15,
+    lineHeight: 22,
+    color: colors.textMuted,
     textAlign: "center",
   },
-  newsletterInput: {
-    marginTop: 24,
-    borderWidth: 1,
-    paddingHorizontal: 12,
-    borderRadius: 8,
+  label: {
     alignSelf: "stretch",
-    fontSize: 18,
+    marginTop: 28,
+    marginBottom: 8,
+    fontSize: 13,
+    fontWeight: "600",
+    color: colors.text,
   },
-  subscribeButton: {
-    marginTop: 24,
-    backgroundColor: "#495E57",
-    borderRadius: 8,
+  input: {
     alignSelf: "stretch",
-    alignItems: "center",
-    paddingVertical: 8,
+    backgroundColor: colors.background,
+    borderWidth: 1.5,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    fontSize: 16,
+    color: colors.text,
   },
-  subscribeText: {
-    color: "white",
-    fontSize: 20,
+  inputFocused: {
+    borderColor: colors.primary,
+    backgroundColor: colors.surface,
   },
-  buttonDisabled: {
-    opacity: 0.5,
+  inputError: {
+    borderColor: colors.error,
+  },
+  errorText: {
+    alignSelf: "stretch",
+    marginTop: 6,
+    fontSize: 13,
+    color: colors.error,
+  },
+  button: {
+    marginTop: 24,
+  },
+  footnote: {
+    marginTop: 16,
+    textAlign: "center",
+    fontSize: 13,
+    color: colors.textMuted,
   },
 });
 

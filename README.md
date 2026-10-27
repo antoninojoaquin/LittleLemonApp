@@ -1,56 +1,105 @@
-# Welcome to your Expo app 👋
+<div align="center">
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<img src="assets/images/little-lemon-logo.png" alt="Little Lemon" width="90" />
 
-## Get started
+# Little Lemon
 
-1. Install dependencies
+**App móvil para Little Lemon, un bistró mediterráneo de Chicago.**
 
-   ```bash
-   npm install
-   ```
+Proyecto final del curso **React Native** del programa
+[Meta React Native Specialization](https://www.coursera.org/specializations/meta-react-native) (Coursera).
 
-2. Start the app
+![Expo SDK 58](https://img.shields.io/badge/Expo-SDK%2058-000020?logo=expo&logoColor=white)
+![React Native 0.88](https://img.shields.io/badge/React%20Native-0.88-61DAFB?logo=react&logoColor=black)
+![React Navigation 7](https://img.shields.io/badge/React%20Navigation-7-6B52AE)
 
-   ```bash
-   npx expo start
-   ```
+</div>
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Capturas
 
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+<p align="center">
+  <img src="docs/screenshots/welcome.png" alt="Pantalla de bienvenida" width="300" />
+  &nbsp;&nbsp;
+  <img src="docs/screenshots/subscribe.png" alt="Pantalla de suscripción al newsletter" width="300" />
+</p>
 
-## Get a fresh project
+## Sobre el proyecto
 
-When you're ready, run:
+El curso pide una app de dos pantallas: una de **bienvenida** y otra de **suscripción al newsletter** con validación de email. Esta versión cumple los mismos requisitos funcionales que la consigna de Meta, pero con un rediseño visual propio, más moderno y amigable.
 
-```bash
-npm run reset-project
+### Requisitos del curso
+
+- [x] Pantalla de bienvenida con el logo y el eslogan del restaurante
+- [x] Botón que navega a la pantalla del newsletter
+- [x] Navegación con un Native Stack de React Navigation
+- [x] Campo de email con teclado adecuado y sin autocorrección
+- [x] Botón **Subscribe** deshabilitado hasta que el email sea válido
+- [x] Alerta de confirmación al suscribirse y limpieza del campo
+
+### Mejoras sobre la consigna original
+
+- **Sistema de diseño**: paleta oficial de Little Lemon (verde `#495E57` y amarillo `#F4CE14`), radios, sombras y colores centralizados en [`constants/theme.js`](constants/theme.js).
+- **Componentes reutilizables**: [`PrimaryButton`](components/PrimaryButton.js) con respuesta visual al presionar y estado deshabilitado accesible.
+- **Mejor experiencia en el formulario**: etiqueta en el input, borde en foco, mensaje de error al salir del campo, autocompletado de email y envío desde el teclado.
+- **Adaptado a cualquier dispositivo**: respeta el área segura (notch, barra de gestos) y el teclado nunca tapa el formulario.
+- **Accesibilidad**: roles y estados para lectores de pantalla.
+- **Deep linking**: la ruta `/subscribe` abre directamente la pantalla del newsletter.
+- **Stack actualizado**: Expo SDK 58, React 19 y React Native 0.88.
+
+## Tecnologías
+
+| | |
+|---|---|
+| Framework | [Expo](https://expo.dev) SDK 58 · React Native 0.88 · React 19 |
+| Navegación | [React Navigation 7](https://reactnavigation.org) (Native Stack) |
+| UI | `StyleSheet` de React Native, `react-native-safe-area-context`, `expo-status-bar` |
+| Plataformas | Android, iOS y web |
+
+## Estructura
+
+```
+.
+├── App.js                  # Punto de entrada: providers, navegación y deep links
+├── index.js                # Registro del componente raíz
+├── navigators/
+│   └── RootNavigator.js    # Stack de pantallas y estilo del header
+├── screens/
+│   ├── WelcomeScreen.js    # Pantalla de bienvenida
+│   └── SubscribeScreen.js  # Formulario del newsletter
+├── components/
+│   └── PrimaryButton.js    # Botón principal reutilizable
+├── constants/
+│   └── theme.js            # Colores, radios y sombras
+├── utils/
+│   └── index.js            # Validación de email
+└── assets/images/          # Logos, ícono y splash
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+## Cómo correrlo
 
-### Other setup steps
+**Requisitos:** Node.js 20 o superior y la app [Expo Go](https://expo.dev/go) (SDK 58) en el celular, o un emulador Android / simulador iOS.
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```bash
+git clone https://github.com/antoninojoaquin/LittleLemonApp.git
+cd LittleLemonApp
+npm install
+npx expo start
+```
 
-## Learn more
+Después escaneá el QR con Expo Go (Android) o con la cámara (iOS). También podés apretar `a` para Android, `i` para iOS o `w` para web.
 
-To learn more about developing your project with Expo, look at the following resources:
+### Scripts
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+| Comando | Descripción |
+|---|---|
+| `npm start` | Inicia el servidor de desarrollo |
+| `npm run android` | Abre la app en Android |
+| `npm run ios` | Abre la app en iOS |
+| `npm run web` | Abre la app en el navegador |
 
-## Join the community
+## Créditos
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Consigna, marca y assets de **Little Lemon**: Meta, para la [Meta React Native Specialization](https://www.coursera.org/specializations/meta-react-native).
+- Rediseño e implementación: [Joaquín Antonino](https://github.com/antoninojoaquin).

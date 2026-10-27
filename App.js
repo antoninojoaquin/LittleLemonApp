@@ -1,11 +1,25 @@
 import { NavigationContainer } from "@react-navigation/native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 import RootNavigator from "./navigators/RootNavigator";
 
-// App.js is already setup by wrapping NavigationContainer around Root Navigator
+const linking = {
+  prefixes: [],
+  config: {
+    screens: {
+      Welcome: "",
+      Subscribe: "subscribe",
+    },
+  },
+};
+
 export default function App() {
   return (
-    <NavigationContainer>
-      <RootNavigator />
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer linking={linking}>
+        <StatusBar style="dark" />
+        <RootNavigator />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
