@@ -103,3 +103,7 @@ Después escaneá el QR con Expo Go (Android) o con la cámara (iOS). También p
 
 - Consigna, marca y assets de **Little Lemon**: Meta, para la [Meta React Native Specialization](https://www.coursera.org/specializations/meta-react-native).
 - Rediseño e implementación: [Joaquín Antonino](https://github.com/antoninojoaquin).
+
+## Licencia
+
+El código está bajo la licencia [MIT](LICENSE). La marca, los logos y los assets de Little Lemon pertenecen a Meta y se usan solo con fines educativos.
